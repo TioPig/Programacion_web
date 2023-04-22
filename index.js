@@ -16,3 +16,21 @@ function saludoP(){
 
     document.getElementById("nono").value = mensaje;
 }
+
+function mostrarEdad(){
+    let edad = document.getElementById("edad");
+
+    let mensaje = "La edad es " + edad.value;
+
+    document.getElementById("resedad").innerHTML = mensaje;
+}
+
+
+// let boton = document.getElementById("apretame");
+
+// boton.addEventListener(
+//     `click`,
+//     function(){
+//         alert("me apretaste")
+//     }
+// )
