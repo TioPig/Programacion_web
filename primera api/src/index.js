@@ -1,40 +1,34 @@
-const express =  require('express');
+require('dotenv').config();//IMPORTA VARIABLES DE ENTORNO
 
-const app = express();
+const express = require('express'); //LLAMO LIBRERIA DE EXPRESS
 
-app.use(express.json())
-//app.use(express.urlencode())
+const app = express(); //INSTACIO EXPRESS
 
-app.get('', (req, res) => {
+//configuracion
+app.use(express.json()); //PARA QUE EXPRESS LEA JSON DEL BODY
+app.use(express.urlencoded({ extended: false })); //PARA QUE EXPRESS LEA JSON DEL BODY
 
-    const {param1, param2} = req.query
+//rutas
+//llamar a las rutas
+const usuarioRoutes = require('./routes/usuario.routes');
+const loginRoutes = require('./routes/login.routes');
+const mascotaRoutes = require('./routes/mascota.routes');
 
-    res.json({
+app.use('/usuario', usuarioRoutes);
+app.use('/auth', loginRoutes);
+app.use('/mascota', mascotaRoutes);
 
-            "param1": param1,
-            "param2": param2
-            
-    });
-});
+//CUANDO NO EXISTA RUTA ENTRA ACA
+app.all('*', (req, res) => {
+    res.json(
+        {
+            "ok": false,
+            "msj": "URL no encontrada"
+        }
+    );
+})
 
-
-app.post('/usuario', (req, res) => {
-    
-    const {user,password} = req.body
-
-    if(user === 'p.ig' && password === 'tio'){
-        return res.json({
-            "valido": true
-        })
-    }else{
-        return res.json({
-            "Valido": false
-        })
-    }
-});
-
-app.listen(7777, () => {
-    console.log("Servidor Iniciado")
-
-
+//INICIALIZA NUESTRA API
+app.listen(process.env.PORT, () => {
+    console.log("servidor iniciado");
 });
